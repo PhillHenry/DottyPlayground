@@ -1,5 +1,5 @@
 val scala3Version = "3.0.2"
-
+lazy val scalaTest = ("org.scalatest" %% "scalatest" % "3.2.9")
 lazy val root = project
   .in(file("."))
   .settings(
@@ -14,3 +14,4 @@ lazy val root = project
 libraryDependencies += "org.emergent-order" %% "onnx-scala-backends" % "0.14.0"
 //libraryDependencies += "org.emergent-order" %% "onnx-scala-backends" % "0.13.0"
 libraryDependencies += "org.sciscala" %% "ndscala-onnx-scala" % "0.1.0-SNAPSHOT"
+libraryDependencies += scalaTest % Test
