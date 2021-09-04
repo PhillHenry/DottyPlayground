@@ -1,14 +1,14 @@
-import org.junit.Test
 import org.junit.Assert.*
+import org.junit.Test
 //import scala.collection.immutable.ArraySeq
-import scala.language.implicitConversions
-import org.emergentorder.onnx.Tensors._
-import org.emergentorder.compiletime._
-import io.kjaer.compiletime._
+import io.kjaer.compiletime.*
+import org.emergentorder.compiletime.*
+import org.emergentorder.onnx.Tensors.*
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
-//import scala.reflect.ClassTag
-import org.sciscala.ndscala.ONNXScalaOps._
+
+import scala.language.implicitConversions
+import org.sciscala.ndscala.ONNXScalaOps.*
 import org.sciscala.ndscala.given_NDArrayOps_Tensor
 
 class Test1:
