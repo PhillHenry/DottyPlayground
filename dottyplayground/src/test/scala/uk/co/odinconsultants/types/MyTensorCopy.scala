@@ -3,14 +3,9 @@ package uk.co.odinconsultants.types
 import org.junit.Assert.*
 import org.junit.Test
 import uk.co.odinconsultants.types.MyTensorShapeDenotation.{Concat, Reverse}
-//import scala.collection.immutable.ArraySeq
 import io.kjaer.compiletime.*
-import org.emergentorder.compiletime.*
-import org.emergentorder.onnx.Tensors.*
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
-import org.sciscala.ndscala.ONNXScalaOps.*
-import org.sciscala.ndscala.given_NDArrayOps_Tensor
 
 import scala.compiletime.ops.int.*
 import scala.language.implicitConversions
