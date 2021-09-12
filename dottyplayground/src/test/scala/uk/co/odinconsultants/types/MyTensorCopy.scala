@@ -43,7 +43,7 @@ sealed trait MyTensorShapeDenotation extends Product with Serializable {
 }
 
 
-sealed trait MyTSNil extends MyTensorShapeDenotation
+trait MyTSNil extends MyTensorShapeDenotation
 case object MyTSNil  extends MyTSNil
 
 object MyTensorShapeDenotation {
@@ -175,14 +175,21 @@ object MyTensorShapeDenotation {
     }
 }
 
+//sealed trait MySNil extends Shape
+//case object MySNil  extends MySNil
 
 class MyTensorCopy {
   type MySupported = Int
   type MyTensorTypeDenotation = String & Singleton
   type MyAxes = Tuple3[MyTensorTypeDenotation, MyTensorShapeDenotation, Shape]
-  opaque type MyTensor[T <: MySupported, Ax <: MyAxes] = Tuple2[Array[T], Ax]
+  type MyTensor[T <: MySupported, Ax <: MyAxes] = Tuple2[Array[T], Ax]
 
   @Test def placeholder(): Unit = {
+    val denotations = "TensorShapeDenotation" ##: MyTSNil
+    val dimensions = 2 #: 2 #: SNil
+    val square_2 = Tuple2(Array(1, 2, 3, 4),("TensorTypeDenotation", denotations, dimensions))
     println("Hello world")
   }
+
+//  def aTensor(): MyTensor[Int]
 }
