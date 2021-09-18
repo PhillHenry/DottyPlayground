@@ -22,5 +22,7 @@ lazy val myProject = project
   .settings(
     fork := true,
     javaOptions += s"-Djna.library.path=${"python3-config --prefix".!!.trim}/lib",
-    libraryDependencies += "io.kjaer" %% "tf-dotty" % "insert-version-here"
+    resolvers +=
+      "Sonatype OSS Snapshots" at "https://oss.sonatype.org/content/repositories/snapshots",
+    libraryDependencies += "io.kjaer" %% "tf-dotty" % "0.0.0+53-201c1206-SNAPSHOT"
   )
