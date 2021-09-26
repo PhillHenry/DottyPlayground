@@ -1,6 +1,6 @@
 package uk.co.odinconsultants.types
 
-import io.kjaer.compiletime._
+import uk.co.odinconsultants.types._
 
 object MyTF {
   type TwoXTwo = 2 #: 2 #: SNil
