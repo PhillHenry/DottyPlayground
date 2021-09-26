@@ -10,13 +10,13 @@ object MyTF {
 
   def twoByTwo[F[_]](x: F[TwoXTwo]): Unit = println("2 x 2")
 
-  def multiply[T <: Int & Singleton](x: 2 #: T #: SNil, y: T #: 3 #: SNil): Unit = println(s"Multiply $x by $y")
+  def multiply[T <: Dimension](x: Dimension #: T #: SNil, y: T #: Dimension #: SNil): Unit = println(s"Multiply $x by $y")
 
   def main(args: Array[String]): Unit = {
     println(twoXtwo.getClass.getName)
     twoByTwo(List(twoXtwo))
 //    twoByTwo(List(twoXthree)) // doesn't compile - as expected
     multiply(twoXtwo, twoXthree)
-//    multiply(threeXthree, twoXthree) // doesn't compile - as expected
+    multiply(threeXthree, twoXthree) // shouldn't compile
   }
 }
