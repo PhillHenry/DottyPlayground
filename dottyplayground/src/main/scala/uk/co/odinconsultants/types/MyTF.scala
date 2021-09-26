@@ -10,7 +10,7 @@ object MyTF {
 
   def twoByTwo[F[_]](x: F[TwoXTwo]): Unit = println("2 x 2")
 
-  def multiply[T <: Dimension, U <: Dimension](x: Dimension #: T #: SNil, y: U #: Dimension #: SNil)(implicit ev: T <:< U): Unit
+  def multiply[T <: Dimension, U <: Dimension](x: Dimension #: T #: SNil, y: U #: Dimension #: SNil)(implicit ev: T =:= U): Unit
     = println(s"Multiply $x by $y")
 
   def main(args: Array[String]): Unit = {
