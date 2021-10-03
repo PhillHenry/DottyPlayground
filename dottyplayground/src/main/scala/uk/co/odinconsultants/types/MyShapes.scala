@@ -3,7 +3,7 @@ package uk.co.odinconsultants.types
 import scala.compiletime.ops.int.{+, <, <=, S, *}
 import scala.compiletime.ops.boolean.&&
 import scala.compiletime.ops.int
-
+/*
 sealed trait Indices {
   def ::[H <: Index, This >: this.type <: Indices](head: H): H :: This =
     uk.co.odinconsultants.types.::(head, this)
@@ -18,8 +18,9 @@ final case class ::[H <: Index, T <: Indices](head: H, tail: T)
   extends Indices {
   override def toString = s"$head :: $tail"
 }
-
+*/
 // Extensions on ints that allow scala.compiletime.ops to be dependently typed
+/*
 extension [X <: Int, Y <: Int](x: Int) {
   infix def add(y: Y): X + Y = (x + y).asInstanceOf[X + Y]
   infix def sub(y: Y): X - Y = (x - y).asInstanceOf[X - Y]
@@ -27,7 +28,8 @@ extension [X <: Int, Y <: Int](x: Int) {
   infix def lt(y: Y): X < Y = (x < y).asInstanceOf[X < Y]
   infix def le(y: Y): X <= Y = (x <= y).asInstanceOf[X <= Y]
 }
-
+*/
+/*
 sealed trait INil extends Indices
 case object INil extends INil
 
@@ -58,7 +60,7 @@ object Indices {
       }
     }
 }
-
+*/
 
 
 type Index = Int & Singleton
@@ -71,7 +73,7 @@ sealed trait Shape extends Product with Serializable {
   /** Prepend the head to this */
   def #:[H <: Dimension, This >: this.type <: Shape](head: H): H #: This =
     uk.co.odinconsultants.types.#:(head, this)
-
+/*
   /** Concat with another shape * */
   def ++(that: Shape): this.type Concat that.type = Shape.concat(this, that)
 
@@ -88,6 +90,7 @@ sealed trait Shape extends Product with Serializable {
     case SNil         => Nil
     case head #: tail => head +: tail.toSeq
   }
+*/
 }
 
 final case class #:[+H <: Dimension, +T <: Shape](head: H, tail: T) extends Shape {
@@ -101,6 +104,7 @@ sealed trait SNil extends Shape
 case object SNil  extends SNil
 
 object Shape {
+  /*
   def scalar: SNil                                   = SNil
   def vector(length: Dimension): length.type #: SNil = length #: SNil
   def matrix(rows: Dimension, columns: Dimension): rows.type #: columns.type #: SNil =
@@ -163,6 +167,7 @@ object Shape {
   type Tail[X <: Shape] <: Shape = X match {
     case _ #: tail => tail
   }
+  */
 
   /** Represents reduction along axes, as defined in TensorFlow:
    *
@@ -176,10 +181,12 @@ object Shape {
    *   List of indices to reduce along. `one` if reduction should be done along all axes. `SNil`
    *   if no reduction should be done.
    */
+  /*
   type Reduce[S <: Shape, Axes <: None.type | Indices] <: Shape = Axes match {
     case None.type => SNil
     case Indices   => ReduceLoop[S, Axes, 0]
   }
+  */
 
   /** Remove indices from a shape
    *
@@ -190,6 +197,7 @@ object Shape {
    * @tparam I
    *   Current index (in the original shape)
    */
+  /*
   protected type ReduceLoop[RemoveFrom <: Shape, ToRemove <: Indices, I <: Index] <: Shape =
     RemoveFrom match {
       case head #: tail =>
@@ -205,9 +213,10 @@ object Shape {
         //     ]
       }
     }
+  */
 
   /** Returns whether index `I` is within bounds of `S` */
-  type WithinBounds[I <: Index, S <: Shape] = (0 <= I && I < Rank[S])
+//  type WithinBounds[I <: Index, S <: Shape] = (0 <= I && I < Rank[S])
 
   /** Remove the element at index `I` in `RemoveFrom`.
    *
@@ -216,6 +225,7 @@ object Shape {
    * @tparam I
    *   Index to remove
    */
+  /*
   type RemoveIndex[RemoveFrom <: Shape, I <: Index] <: Shape = WithinBounds[I, RemoveFrom] match {
     case true => RemoveIndexLoop[RemoveFrom, I, 0]
     // case false => Error[
@@ -223,6 +233,7 @@ object Shape {
     //     " is out of bounds for shape of rank " + int.ToString[Rank[RemoveFrom]]
     // ]
   }
+  */
 
   /** Removes element at index `I` from `RemoveFrom`. Assumes `I` is within bounds.
    *
@@ -233,6 +244,7 @@ object Shape {
    * @tparam Current
    *   Current index in the loop
    */
+  /*
   protected type RemoveIndexLoop[RemoveFrom <: Shape, I <: Index, Current <: Index] <: Shape =
     RemoveFrom match {
       case head #: tail =>
@@ -241,6 +253,7 @@ object Shape {
         case _ => head #: RemoveIndexLoop[tail, I, S[Current]]
       }
     }
+  */
 
   /** Apply a function to elements of a Shape. Type-level representation of `def map(f: (A) => A):
    * List[A]`
@@ -250,10 +263,12 @@ object Shape {
    * @tparam F
    *   Function taking an value of the Shape, returning another value
    */
+  /*
   type Map[X <: Shape, F[_ <: Dimension] <: Dimension] <: Shape = X match {
     case SNil         => SNil
     case head #: tail => F[head] #: Map[tail, F]
   }
+  */
 
   /** Apply a folding function to the elements of a Shape Type-level representation of `def
    * foldLeft[B](z: B)(op: (B, A) => B): B`
@@ -267,12 +282,11 @@ object Shape {
    * @tparam F
    *   Function taking an accumulator of type B, and an element of type Int, returning B
    */
+  /*
   type FoldLeft[B, X <: Shape, Z <: B, F[_ <: B, _ <: Int] <: B] <: B = X match {
     case SNil         => Z
     case head #: tail => FoldLeft[B, tail, F[Z, head], F]
   }
+  */
 }
 
-class MyShapes {
-
-}
