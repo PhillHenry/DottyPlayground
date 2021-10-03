@@ -5,17 +5,18 @@ import scala.compiletime.ops.int
 
 object TypeMatching {
 
-  extension [X <: Int, Y <: Int](x: Int) {
-    infix def add(y: Y): X + Y = (x + y).asInstanceOf[X + Y]
-    infix def sub(y: Y): X - Y = (x - y).asInstanceOf[X - Y]
-    infix def mul(y: Y): X * Y = (x * y).asInstanceOf[X * Y]
-    infix def lt(y: Y): X < Y = (x < y).asInstanceOf[X < Y]
-    infix def le(y: Y): X <= Y = (x <= y).asInstanceOf[X <= Y]
-  }
-
   trait Shape extends Product with Serializable
 
   trait SNil extends Shape
+
+  type Dimension = Int & Singleton
+
+  final case class #:[+H <: Dimension, +T <: Shape](head: H, tail: T) extends Shape {
+    override def toString = head match {
+      case _ #: _ => s"($head) #: $tail" // Dimension really needs to be a Singleton for this to compile
+      case _      => s"$head #: $tail"
+    }
+  }
 
   type NumElements[X <: Shape] <: Int = X match {
     case SNil         => 1
