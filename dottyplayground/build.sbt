@@ -16,6 +16,7 @@ lazy val root = project
 libraryDependencies += "org.emergent-order" %% "onnx-scala-backends" % "0.14.0"
 //libraryDependencies += "org.emergent-order" %% "onnx-scala-backends" % "0.13.0"
 libraryDependencies += "org.sciscala" %% "ndscala-onnx-scala" % "0.1.0-SNAPSHOT"
+libraryDependencies += "eu.timepit" %% "refined" % "0.9.28"
 libraryDependencies += scalaTest % Test
 
 lazy val myProject = project
