@@ -1,6 +1,6 @@
 import scala.sys.process._
 
-val scala3Version = "3.0.2"
+val scala3Version = "3.1.0"
 lazy val scalaTest = ("org.scalatest" %% "scalatest" % "3.2.9")
 lazy val root = project
   .in(file("."))
