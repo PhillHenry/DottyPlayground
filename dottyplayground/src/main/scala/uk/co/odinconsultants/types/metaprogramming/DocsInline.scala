@@ -22,6 +22,25 @@ object DocsInline {
   def main(args: Array[String]): Unit = {
     unknownAtCompileTime(args(0).toBoolean)
 //    println("hello, world")
+    myInlineMethod(new Child1[1] {})
+  }
+
+  trait Parent[E]
+  trait Child1[E] extends Parent[E]
+  trait Child2[E] extends Parent[E]
+  implicit inline def myInlineMethod[E <: Int](x: Parent[E]): Parent[E] = {
+    println(x)
+    x match {
+      case _: Child1[e] =>
+        println("Child1")
+        x
+      case _: Child2[e] =>
+        println("Child2")
+        x
+      case _ =>
+        println("didn't match")
+        x
+    }
   }
 
 }
