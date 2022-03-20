@@ -1,5 +1,8 @@
 package uk.co.odinconsultants.types.metaprogramming
 
+import scala.compiletime.{erasedValue, constValue, error}
+import scala.compiletime.ops.int.ToString
+
 /**
  * From https://dotty.epfl.ch/docs/reference/metaprogramming/inline.html
  */
@@ -20,27 +23,33 @@ object DocsInline {
   def unknownAtCompileTime(x: Boolean): A = choose(x)
 
   def main(args: Array[String]): Unit = {
-    unknownAtCompileTime(args(0).toBoolean)
+    val runtimeBoolean: Boolean = args(0).toBoolean
+    val runtimeInt: Int = args(1).toInt
+    unknownAtCompileTime(runtimeBoolean)
 //    println("hello, world")
     myInlineMethod(new Child1[1] {})
+    myInlineMethod(new Child2(runtimeInt))
   }
 
   trait Parent[E]
   trait Child1[E] extends Parent[E]
-  trait Child2[E] extends Parent[E]
-  implicit inline def myInlineMethod[E <: Int](x: Parent[E]): Parent[E] = {
-    println(x)
-    x match {
-      case _: Child1[e] =>
-        println("Child1")
-        x
-      case _: Child2[e] =>
-        println("Child2")
+  case class Child2[E](e: E) extends Parent[E]
+  implicit inline def myInlineMethod[E <: Int & Singleton](x: Parent[E]): Parent[E] = {
+    inline erasedValue[E] match // inline is needed here or else "method erasedValue is declared as erased, but is in fact used"
+      case _: 1 =>
+        println("1!")
         x
       case _ =>
         println("didn't match")
         x
-    }
   }
+
+  // fails with "inline match can only be used in an inline method"
+//  def normalMethod(x: Any) = {
+//    inline x match {
+//      case _: String => println("it was a string")
+//      case _ => println("it was not a string")
+//    }
+//  }
 
 }
