@@ -12,7 +12,7 @@ lazy val root = project
 
     libraryDependencies += "com.novocode" % "junit-interface" % "0.11" % "test",
 
-    scalacOptions ++= Seq("-Xmax-inlines 1024")
+    scalacOptions ++= Seq("-Xmax-inlines",  "1024")
   )
 libraryDependencies += "org.emergent-order" %% "onnx-scala-backends" % "0.14.0"
 //libraryDependencies += "org.emergent-order" %% "onnx-scala-backends" % "0.13.0"
