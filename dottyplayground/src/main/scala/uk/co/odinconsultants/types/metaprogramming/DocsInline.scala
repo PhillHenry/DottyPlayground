@@ -29,6 +29,11 @@ object DocsInline {
 //    println("hello, world")
     myInlineMethod(new Child1[1] {})
     myInlineMethod(new Child2(runtimeInt))
+
+    val _5 = toNat(5)
+    val _33 = toNat(33) // needs -Xmax-inlines...
+    print(_5)
+    print(_33)
   }
 
   trait Parent[E]
@@ -52,4 +57,22 @@ object DocsInline {
 //    }
 //  }
 
+  trait Nat
+  case object Zero extends Nat
+  case class Succ[N <: Nat](n: N) extends Nat
+
+  transparent inline def toNat(x: Int): Nat =
+    inline x match
+      case 0 => Zero
+      case 1 => Succ(Zero)
+      case _ => Succ(toNat(x - 1))
+
+
+  transparent inline def toInt(n: Nat): Int =
+    inline n match
+      case Zero     => 0
+      case Succ(n1) => toInt(n1) + 1
+
+  inline val natTwo = toInt(Succ(Succ(Zero)))
+  val intTwo: 2 = natTwo
 }
