@@ -32,8 +32,10 @@ object DocsInline {
 
     val _5 = toNat(5)
     val _33 = toNat(33) // needs -Xmax-inlines...
-    print(_5)
-    print(_33)
+    println(_5)
+    println(_33)
+    println(toInt(_5))
+    println(toInt(_33))
   }
 
   trait Parent[E]
@@ -57,7 +59,7 @@ object DocsInline {
 //    }
 //  }
 
-  trait Nat
+  sealed trait Nat
   case object Zero extends Nat
   case class Succ[N <: Nat](n: N) extends Nat
 
@@ -68,10 +70,11 @@ object DocsInline {
       case _ => Succ(toNat(x - 1))
 
 
-  transparent inline def toInt(n: Nat): Int =
+  transparent inline def toInt(inline n: Nat): Int =
     inline n match
-      case Zero     => 0
       case Succ(n1) => toInt(n1) + 1
+      case Zero     => 0
+      case _        => -1 // wut? Needed to compile
 
   inline val natTwo = toInt(Succ(Succ(Zero)))
   val intTwo: 2 = natTwo
