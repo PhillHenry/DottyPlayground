@@ -91,6 +91,11 @@ In your specific case, it seems like the recursive call of the toNat method kind
         case Zero       => 2
       case _          => -42 // wut? Needed to compile
 
+//  def only3(x: toNat2(3)) = println("")
+  
+  transparent inline def toNat2(inline n: Int): Nat =
+    inline if (n == 0) Zero else Succ(toNat2(n-1))
+
   transparent inline def toInt(inline n: Nat): Int =
     inline n match
       case Succ(n1) => toInt(n1) + 1

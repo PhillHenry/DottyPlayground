@@ -33,5 +33,10 @@ object AdamsInline {
       case z: Zero.type => 0
       case s: Succ[_] => (toInt(s.n) + 1).asInstanceOf
 
+  def only5(x: ToInt[ToNat[5]]) = println(x)
 
+  def main(args: Array[String]): Unit = {
+    only5(5)
+//    only5(4)  //  Type Mismatch Error
+  }
 }
