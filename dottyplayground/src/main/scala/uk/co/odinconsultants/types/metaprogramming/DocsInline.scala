@@ -34,8 +34,17 @@ object DocsInline {
     val _33 = toNat(33) // needs -Xmax-inlines...
     println(_5)
     println(_33)
-    println(toInt(_5))
-    println(toInt(_33))
+    println(_33.n)
+    println(s"toInt(_5)       = ${toInt(_5)}")
+    println(s"succ(_5)        = ${succ(_5)}")
+    println(s"succ(_two)      = ${succ(_two)}")
+    println(s"succ(_three)    = ${succ(_three)}")
+    println(s"succ(_four)     = ${succ(_four)}")
+    println(s"toNat(4)        = ${toNat(4)}")
+    println(s"succ(toNat(4))  = ${succ(toNat(4))}")
+    println(s"succ(_fourNat)  = ${succ(_fourNat)}")
+    println(s"toInt(_33)      = ${toInt(_33)}")
+    println(s"toInt(_four)    = ${toInt(_fourNat)}")
   }
 
   trait Parent[E]
@@ -69,13 +78,23 @@ object DocsInline {
       case 1 => Succ(Zero)
       case _ => Succ(toNat(x - 1))
 
+  transparent inline def succ[E <: Nat](x: Succ[E]): Int =
+    inline erasedValue[E] match
+      case y: Succ[t] => inline erasedValue[t] match
+        case _: Succ[_] => succ(y) + 1
+        case Zero       => 2
+      case _          => -42 // wut? Needed to compile
 
   transparent inline def toInt(inline n: Nat): Int =
     inline n match
       case Succ(n1) => toInt(n1) + 1
       case Zero     => 0
-      case _        => -1 // wut? Needed to compile
+      case _        => -42 // wut? Needed to compile
 
-  inline val natTwo = toInt(Succ(Succ(Zero)))
-  val intTwo: 2 = natTwo
+  val _fourNat = toNat(4)
+  private val _two: Succ[Succ[Zero.type]] = Succ(Succ(Zero))
+  private val _three = Succ(Succ(Succ(Zero)))
+  private val _four = Succ( Succ(Succ(Succ(Zero))))
+  inline val natTwo = toInt(_two)
+//  val intTwo: 2 = natTwo
 }
