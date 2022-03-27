@@ -72,13 +72,19 @@ object DocsInline {
   case object Zero extends Nat
   case class Succ[N <: Nat](n: N) extends Nat
 
-  transparent inline def toNat(x: Int): Nat =
+  transparent inline def toNat(inline x: Int): Nat =
     inline x match
       case 0 => Zero
       case 1 => Succ(Zero)
       case _ => Succ(toNat(x - 1))
 
-  transparent inline def succ[E <: Nat](x: Succ[E]): Int =
+  /**
+   * ragnar — Today at 12:54 PM
+@PhillHenry they are not inferred to be the same type, the former is inferred to be Succ[Nat] the latter is Succ[Succ[Succ[Zero.type]]].
+In your specific case, it seems like the recursive call of the toNat method kinda does not work in a transparent way anymore and is just typed as Nat, not as a more precise type.
+(and succ does inline matching which works on the static type, not on any runtime types)
+   */
+  transparent inline def succ[E <: Nat](inline x: Succ[E]): Int =
     inline erasedValue[E] match
       case y: Succ[t] => inline erasedValue[t] match
         case _: Succ[_] => succ(y) + 1
