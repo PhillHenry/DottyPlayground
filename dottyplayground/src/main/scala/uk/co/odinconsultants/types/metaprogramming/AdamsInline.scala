@@ -39,15 +39,15 @@ object AdamsInline {
   transparent inline def toNatAlt[I <: Int](inline x: I): ToNat[I] =
     inline if (erasedValue[I] == 0) Zero.asInstanceOf else Succ(toNatAlt(x - 1)).asInstanceOf
 
-//  transparent inline def toNat2[I <: Int]: ToNat[I] =
-//    inline erasedValue[I] match
-//      case z: 0 => Zero
-//      case s: S[_] => Succ(toNat2[I]).asInstanceOf
+  transparent inline def toNat2[I <: Int]: ToNat[I] =
+    inline erasedValue[I] match
+      case z: 0 => Zero.asInstanceOf
+      case s: S[t] => Succ(toNat2[t]).asInstanceOf
 
 
   def main(args: Array[String]): Unit = {
     only5(5)
 //    only5(4)  //  Type Mismatch Error
-//    println(toNat2[5])
+    println(toNat2[5])
   }
 }
