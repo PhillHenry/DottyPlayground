@@ -16,12 +16,12 @@ object AdamsInline {
   case class Succ[N <: Nat](n: N) extends Nat
 
   type ToNat[N <: Int] <: Nat = N match
-    case 0 => Zero.type
+    case 0    => Zero.type
     case S[n] => Succ[ToNat[n]]
 
   type ToInt[N <: Nat] <: Int = N match
-    case Zero.type => 0
-    case Succ[n] => S[ToInt[n]]
+    case Zero.type  => 0
+    case Succ[n]    => S[ToInt[n]]
 
   inline def toInt[N <: Nat]: ToInt[N] =
     inline erasedValue[N] match
