@@ -23,14 +23,14 @@ object AdamsInline {
     case Zero.type => 0
     case Succ[n] => S[ToInt[n]]
 
-  transparent inline def toInt[N <: Nat]: ToInt[N] =
+  inline def toInt[N <: Nat]: ToInt[N] =
     inline erasedValue[N] match
       case z: Zero.type => 0
       case s: Succ[t]   => toInt[t].asInstanceOf
 
   def only5(x: ToInt[ToNat[5]]) = println(x)
 
-  transparent inline def toNat[I <: Int]: ToNat[I] =
+  inline def toNat[I <: Int]: ToNat[I] =
     inline erasedValue[I] match
       case z: 0    => Zero
       case s: S[t] => Succ(toNat[t])
