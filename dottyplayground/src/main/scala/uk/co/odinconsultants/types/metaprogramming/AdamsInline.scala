@@ -23,10 +23,10 @@ object AdamsInline {
     case Zero.type => 0
     case Succ[n] => S[ToInt[n]]
 
-  transparent inline def toInt[N <: Nat](inline x: N): ToInt[N] =
+  transparent inline def toInt[N <: Nat]: ToInt[N] =
     inline erasedValue[N] match
       case z: Zero.type => 0
-      case s: Succ[_] => (toInt(s.n) + 1).asInstanceOf
+      case s: Succ[t]   => toInt[t].asInstanceOf
 
   def only5(x: ToInt[ToNat[5]]) = println(x)
 
@@ -35,11 +35,12 @@ object AdamsInline {
       case z: 0    => Zero
       case s: S[t] => Succ(toNat[t])
 
+  val _7 = toNat[7]
 
   def main(args: Array[String]): Unit = {
     only5(5)
 //    only5(4)  //  Type Mismatch Error
     println(toNat[5])
-    println(toInt(toNat[7]))
+    println(toInt[_7.type])
   }
 }
