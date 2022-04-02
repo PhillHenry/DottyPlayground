@@ -35,8 +35,19 @@ object AdamsInline {
 
   def only5(x: ToInt[ToNat[5]]) = println(x)
 
+  // this compiles but I can't call it
+  transparent inline def toNatAlt[I <: Int](inline x: I): ToNat[I] =
+    inline if (erasedValue[I] == 0) Zero.asInstanceOf else Succ(toNatAlt(x - 1)).asInstanceOf
+
+//  transparent inline def toNat2[I <: Int]: ToNat[I] =
+//    inline erasedValue[I] match
+//      case z: 0 => Zero
+//      case s: S[_] => Succ(toNat2[I]).asInstanceOf
+
+
   def main(args: Array[String]): Unit = {
     only5(5)
 //    only5(4)  //  Type Mismatch Error
+//    println(toNat2[5])
   }
 }

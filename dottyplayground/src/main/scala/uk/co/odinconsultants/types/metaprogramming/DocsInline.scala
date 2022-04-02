@@ -92,7 +92,7 @@ In your specific case, it seems like the recursive call of the toNat method kind
       case _          => -42 // wut? Needed to compile
 
 //  def only3(x: toNat2(3)) = println("")
-  
+
   transparent inline def toNat2(inline n: Int): Nat =
     inline if (n == 0) Zero else Succ(toNat2(n-1))
 
