@@ -11,7 +11,7 @@ In your specific case, it seems like the recursive call of the toNat method kind
 (and succ does inline matching which works on the static type, not on any runtime types)
  */
 object AdamsInline {
-  sealed trait Nat
+  trait Nat
   case object Zero extends Nat
   case class Succ[N <: Nat](n: N) extends Nat
 
@@ -23,11 +23,6 @@ object AdamsInline {
     case Zero.type => 0
     case Succ[n] => S[ToInt[n]]
 
-  transparent inline def toNat[I <: Int](inline x: I): ToNat[I] =
-    inline erasedValue[I] match
-      case z: 0 => Zero
-      case s: S[_] => Succ(toNat(s - 1)).asInstanceOf
-
   transparent inline def toInt[N <: Nat](inline x: N): ToInt[N] =
     inline erasedValue[N] match
       case z: Zero.type => 0
@@ -35,19 +30,16 @@ object AdamsInline {
 
   def only5(x: ToInt[ToNat[5]]) = println(x)
 
-  // this compiles but I can't call it
-  transparent inline def toNatAlt[I <: Int](inline x: I): ToNat[I] =
-    inline if (erasedValue[I] == 0) Zero.asInstanceOf else Succ(toNatAlt(x - 1)).asInstanceOf
-
-  transparent inline def toNat2[I <: Int]: ToNat[I] =
+  transparent inline def toNat[I <: Int]: ToNat[I] =
     inline erasedValue[I] match
-      case z: 0 => Zero.asInstanceOf
-      case s: S[t] => Succ(toNat2[t]).asInstanceOf
+      case z: 0    => Zero
+      case s: S[t] => Succ(toNat[t])
 
 
   def main(args: Array[String]): Unit = {
     only5(5)
 //    only5(4)  //  Type Mismatch Error
-    println(toNat2[5])
+    println(toNat[5])
+    println(toInt(toNat[7]))
   }
 }
