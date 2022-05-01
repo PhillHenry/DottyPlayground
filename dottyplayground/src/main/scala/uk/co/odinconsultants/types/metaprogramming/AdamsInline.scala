@@ -1,7 +1,7 @@
 package uk.co.odinconsultants.types.metaprogramming
 
 import scala.compiletime.ops.int.*
-import scala.compiletime.{erasedValue, constValue, error}
+import scala.compiletime.{constValue, erasedValue, error}
 import scala.compiletime.ops.int.ToString
 
 /**
@@ -43,4 +43,19 @@ object AdamsInline {
     println(toNat[5])
     println(toInt[_7.type])
   }
+}
+
+object NoS {
+  import uk.co.odinconsultants.types.metaprogramming.AdamsInline.{Nat, Succ, Zero}
+  
+  type MyS[N <: Int] <: Int
+  type MyNat[N <: Int] <: Nat = N match
+    case 0      => Zero.type
+    case MyS[n] => Succ[MyNat[n]]
+  inline def toMyNat[I <: Int]: MyNat[I] =
+    inline erasedValue[I] match
+      case z: 0       => Zero
+      case s: MyS[t]  => Succ(toMyNat[t])
+
+//  val my7 = toMyNat[7] // cannot reduce inline match with
 }
